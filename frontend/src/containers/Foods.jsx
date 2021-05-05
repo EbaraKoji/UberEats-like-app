@@ -51,6 +51,10 @@ const ItemWrapper = styled.div`
   margin: 16px;
 `;
 
+const submitOrder = () => {
+  console.log('登録ボタンが押されました');
+}
+
 export const Foods = ({match}) => {
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
   const initialState = {
@@ -104,6 +108,7 @@ export const Foods = ({match}) => {
                   food={food}
                   onClickFoodWrapper={
                     (food) => setState({
+                      ...state, 
                       isOpenOrderDialog: true, 
                       selectedFood: food,
                     })
@@ -119,9 +124,21 @@ export const Foods = ({match}) => {
         <FoodOrderDialog
           food={state.selectedFood}
           isOpen={state.isOpenOrderDialog}
+          countNumber={state.selectedFoodCount}
+          onClickCountUp={() => setState({
+            ...state,
+            selectedFoodCount: state.selectedFoodCount + 1,
+          })}
+          onClickCountDown={() => setState({
+            ...state,
+            selectedFoodCount: state.selectedFoodCount - 1,
+          })}
+          onClickOrder={() => submitOrder()}
           onClose={() => setState({
             ...state,
             isOpenOrderDialog: false,
+            selectedFood: null,
+            selectedFoodCount: 1,
           })}
         />
       }
